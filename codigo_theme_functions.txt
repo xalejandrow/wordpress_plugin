@@ -1,0 +1,21 @@
+agregar al final del archivo functions.php del theme
+
+
+add_action( 'woocommerce_order_status_cancelled', 'newNote' );
+
+function newNote( $order_id ){
+	global $woocommerce;
+	
+	if(!$order_id ){
+		return;
+	}
+
+	$order = wc_get_order(  $order_id );
+	$customer = new WC_Customer($order_id);
+
+	$billing_email  = $order->get_billing_email();
+
+	$note = __($billing_email ." - Pedido Cancelado");
+
+	$order->add_order_note($note );
+}
